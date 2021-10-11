@@ -5,6 +5,7 @@ const getProduct = async () => {
     await fetch("http://localhost:3000/api/products")
     .then((res) => res.json())
     .then((data) => products = data );
+    console.log(products);
 };
 const productDisplay = async () => {
     await getProduct ();
@@ -19,5 +20,11 @@ const productDisplay = async () => {
     </article>
     </a>
     `)
+    .join("");
 }
-productDisplay();
+    productDisplay();
+
+
+
+
+
