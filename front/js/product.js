@@ -9,6 +9,8 @@ const colorSelect = document.getElementById('colors');
 const addToBasket = document.getElementById('addToCart');
 const quantitySelect = document.getElementById("quantity");
 let cart = [];
+let color;
+let quantityAdd;
 
 // Récupération du produit avec l'ID
 const getProduct = async () => {
@@ -17,7 +19,7 @@ const getProduct = async () => {
     .then((data) => product = data  ); 
     console.log(product)
 };
-getProduct();
+//getProduct();
 
 // Affichage du produit
 const productDisplay = async () => {
@@ -32,25 +34,41 @@ const productDisplay = async () => {
     `)
     .join("");
 };
-productDisplay();
+//productDisplay();
 
 // Si le local storage contient une valeur la récupérer et l'jouter dans l'array cart
-if (localStorage.getItem('cart') !== null) {
-    cart = JSON.parse(localStorage.getItem('cart'));
-    console.log('localstorage récupéré');
-};
-
-// Si le panier ne contient pas l'id de notre produit ajoute le produit au panier
-if(cart.every((id) => id != `${id}`)){
-    cart.push(product);
-    console.log(cart);
-    console.log('ajoute un nouveau produit au panier');
-};
-
-// Si l'ID et la couleur sont déja présent dans le panier ajoute la quantité sélectionné au panier
-if(cart.every((id) => id == `${id}`) && cart.every((color) => color == `${color}`)) {
-    console.log(cart);
-    console.log('ajoute une nouelle couleur');
-};
-
-
+const addToCart = async () => {
+    await productDisplay();
+    addToBasket.addEventListener('click', () => {
+        let productAdd = {
+            productId : id,
+            colorProduct : colorSelect.value,
+            quantityTotal : parseInt(quantitySelect.value,10) 
+        }
+        if (localStorage.getItem('cart') !== null) {
+            cart = JSON.parse(localStorage.getItem('cart'));
+            console.log('localstorage récupéré');
+        };
+        cart.push(productAdd);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        // Si le panier ne contient pas l'id de notre produit ajoute le produit au panier
+        /*if(cart.every((id) => id != `${id}`) || (cart.every((id) => id == `${id}` && cart.every((color) => color != colorProduct )))){
+            cart.push(productAdd);
+            console.log(cart);
+            console.log('ajoute un nouveau produit au panier');
+        };
+        
+        // Si l'ID et la couleur sont déja présent dans le panier ajoute la quantité sélectionné au panier
+        if(cart.every((id) => id == productAdd.productId) && cart.every((color) => color == productAdd.colorProduct)) {
+            cart.push(productAdd.quantityTotal)
+            console.log(cart);
+            console.log('ajoute une nouelle couleur');
+        }else {
+            cart.push(productAdd);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        };*/
+        
+    });
+}
+addToCart();
+//localStorage.removeItem('cart')
