@@ -41,9 +41,12 @@ const addToCart = async () => {
     await productDisplay();
     addToBasket.addEventListener('click', () => {
         let productAdd = {
+            name: `${product.name}`,
             productId : id,
+            alt : `${product.imageUrl}`,
             colorProduct : colorSelect.value,
-            quantityTotal : parseInt(quantitySelect.value,10) 
+            quantityTotal : parseInt(quantitySelect.value,10), 
+            price: `${product.price}`
         }
         if (localStorage.getItem('cart') !== null) {
             cart = JSON.parse(localStorage.getItem('cart'));
@@ -71,4 +74,4 @@ const addToCart = async () => {
     });
 }
 addToCart();
-//localStorage.removeItem('cart')
+localStorage.removeItem('cart')
