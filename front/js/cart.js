@@ -1,11 +1,10 @@
 
 const cartItems = document.getElementById('cart__items');
-const displayProductInCart = () => {
-    let productInCart = JSON.parse(localStorage.cart);
-    console.log(productInCart);
-    cartItems.innerHTML = productInCart.map((product) => 
-    `
-    <article class="cart__item" data-id="${product.productId}">
+let cart = JSON.parse(localStorage.cart);
+function displayProductInCart() {
+ // console.log(cart);
+  cartItems.innerHTML = cart.map((product) => `
+    <article class="cart__item"  id="${product.productId}">
                 <div class="cart__item__img">
                   <img src="${product.imageUrl}" alt="${product.altTxt}, ${product.name}">
                 </div>
@@ -13,6 +12,7 @@ const displayProductInCart = () => {
                   <div class="cart__item__content__titlePrice">
                     <h2>${product.name}</h2>
                     <p>${product.price} €</p>
+                    <p> ${product.colorProduct}</p>
                   </div>
                   <div class="cart__item__content__settings">
                     <div class="cart__item__content__settings__quantity">
@@ -26,8 +26,24 @@ const displayProductInCart = () => {
                 </div>
               </article>
     `
-    ).join("")
+  ).join("");
+  
+};
 
-
-}
-displayProductInCart();
+const quantityChange = async () => {
+  await displayProductInCart();
+  const productInCart = document.querySelector('.cart__item');
+  let itemQuantity = document.getElementsByClassName('itemQuantity');
+  document.body.addEventListener('change' , () => {
+    for(let i=0; i<itemQuantity.length ; i++)
+    {
+      let quantitySelect = parseInt(itemQuantity[i].value,10) ;
+      cart[i].quantityTotal = quantitySelect;
+      let qte = itemQuantity[i].previousElementSibling;
+      qte.textContent = "Qté: " +quantitySelect;
+      
+      console.log(cart);
+    }
+  });
+} 
+quantityChange();

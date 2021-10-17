@@ -83,16 +83,8 @@ const addInCart = () => {
 }
 addInCart();
 
-
-
-
-
-
-
-
-
     });
 }
 addToCart();
 
-localStorage.removeItem('cart')
+//localStorage.removeItem('cart')
