@@ -63,6 +63,7 @@ const addInCart = () => {
             {
                 cart[i].quantityTotal += productAdd.quantityTotal;
                 productInCart = true;
+                break;
                 console.log('même couleur: changement de la quantite');
             }
         }

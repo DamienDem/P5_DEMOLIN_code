@@ -1,6 +1,7 @@
 
 const cartItems = document.getElementById('cart__items');
 let cart = JSON.parse(localStorage.cart);
+
 function displayProductInCart() {
  // console.log(cart);
   cartItems.innerHTML = cart.map((product) => `
@@ -32,7 +33,6 @@ function displayProductInCart() {
 
 const quantityChange = async () => {
   await displayProductInCart();
-  const productInCart = document.querySelector('.cart__item');
   let itemQuantity = document.getElementsByClassName('itemQuantity');
   document.body.addEventListener('change' , () => {
     for(let i=0; i<itemQuantity.length ; i++)
@@ -40,10 +40,41 @@ const quantityChange = async () => {
       let quantitySelect = parseInt(itemQuantity[i].value,10) ;
       cart[i].quantityTotal = quantitySelect;
       let qte = itemQuantity[i].previousElementSibling;
-      qte.textContent = "Qté: " +quantitySelect;
-      
-      console.log(cart);
+      qte.textContent = "Qté: " +quantitySelect;    
+
+      localStorage.setItem('cart' , JSON.stringify(cart));
+     // console.log(cart);
     }
   });
 } 
 quantityChange();
+const deleteItem = document.getElementsByClassName('deleteItem');
+const deleteProduct = async () => {
+  await displayProductInCart();
+  console.log(cart);
+  for(let i = 0 ; i < cart.length ; i++)
+  {
+    const cartItem = document.getElementsByClassName('cart__item');
+    deleteItem[i].addEventListener ('click', () => {
+      if( i == 0)
+      {
+        cart.splice(i ,1 );
+        cartItem[i].remove();
+        console.log('i=0');
+        console.log(cart);
+
+      } else 
+      {
+        cart.splice(i ,1 );
+        cartItem[i].remove();
+        i--;
+        console.log('i !=0');
+        console.log(cart);
+        console.log(i);
+      }
+     localStorage.setItem('cart' , JSON.stringify(cart));
+    }); 
+  }
+};
+deleteProduct();
+
