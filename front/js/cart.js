@@ -102,32 +102,7 @@ const inputs = document.querySelectorAll(
 );
 console.log(inputs);
 console.log(form);
-let name,firstName,address,city, email;
-const container = document.querySelector(".cart__order__form__question");
-
-inputs.forEach((input) => {
-  input.addEventListener("input", (e) => {
-    switch (e.target.id) {
-      case "firstName":
-        firstNameChecker(e.target.value);
-        break;
-        case "lastName":
-        lastNameChecker(e.target.value);
-        break;
-        case "address":
-        addressChecker(e.target.value);
-        break;
-      case "city":
-        cityChecker(e.target.value);
-        break;
-      case "email":
-        emailChecker(e.target.value);
-        break;
-      default:
-        nul;
-    }
-  });
-});
+let lastName,firstName,address,city, email;
 
 const errorDisplay = (tag, message) => {
   const errorMessage = document.getElementById(tag +"ErrorMsg");
@@ -149,13 +124,13 @@ const firstNameChecker = (value) => {
 const lastNameChecker = (value) => {
   if (value.length > 0 && (value.length < 3 || value.length > 20)) {
     errorDisplay("lastName", "Le Nom doit faire entre 3 et 20 caractères");
-    firstName = null;
+    lastName = null;
   } else if (!value.match(/^[a-zA-Z. -]*$/)) {
     errorDisplay("lastName","Le Nom ne doit pas contenir de caractères spéciaux");
-    firstName = null;
+    lastName = null;
   } else { 
     errorDisplay("lastName", "");
-    firstName = value;
+    lastName = value;
   }
 };
 const addressChecker = (value) => {
@@ -192,29 +167,52 @@ const emailChecker = (value) => {
   }
 };
 
-/*
+inputs.forEach((input) => {
+  input.addEventListener("input", (e) => {
+    switch (e.target.id) {
+      case "firstName":
+        firstNameChecker(e.target.value);
+        break;
+        case "lastName":
+        lastNameChecker(e.target.value);
+        break;
+        case "address":
+        addressChecker(e.target.value);
+        break;
+      case "city":
+        cityChecker(e.target.value);
+        break;
+      case "email":
+        emailChecker(e.target.value);
+        break;
+      default:
+        nul;
+    }
+  });
+});
+
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  if (pseudo && email && password && confirmPass) {
-    const data = {
-      pseudo,
+  if (lastName && firstName && address && city && email ) {
+    const order = {
+      lastName,
+      firstName,
+      address,
+      city,
       email,
-      password,
+      cart,
     };
-    console.log(data);
-
+    console.log(order);
     inputs.forEach((input) => (input.value = ""));
-    progressBar.classList = "";
-
     pseudo = null;
     email = null;
     password = null;
     confirmPass = null;
-    alert("Inscription validée !");
+    alert("Commande validée !");
   } else {
     alert("veuillez remplir correctement les champs");
   }
-});*/
+});
 
 
