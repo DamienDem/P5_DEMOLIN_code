@@ -196,11 +196,13 @@ form.addEventListener("submit", (e) => {
 
   if (lastName && firstName && address && city && email ) {
     const order = {
-      lastName,
-      firstName,
-      address,
-      city,
-      email,
+      contact : {
+        lastName,
+        firstName,
+        address,
+        city,
+        email,
+      },
       cart,
     };
     console.log(order);
@@ -209,6 +211,9 @@ form.addEventListener("submit", (e) => {
     email = null;
     password = null;
     confirmPass = null;
+    localStorage.removeItem('cart');
+    localStorage.setItem('order', JSON.stringify(order));
+
     alert("Commande validée !");
   } else {
     alert("veuillez remplir correctement les champs");
