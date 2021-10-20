@@ -194,30 +194,46 @@ inputs.forEach((input) => {
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
+  
   if (lastName && firstName && address && city && email ) {
-    const order = {
-      contact : {
-        lastName,
-        firstName,
-        address,
-        city,
-        email,
-      },
-      cart,
+    let contact = {
+      lastName,
+            firstName,
+            address,
+            city,
+            email,
     };
-    console.log(order);
-    inputs.forEach((input) => (input.value = ""));
-    pseudo = null;
-    email = null;
-    password = null;
-    confirmPass = null;
-    localStorage.removeItem('cart');
-    localStorage.setItem('order', JSON.stringify(order));
-
+    let products = [];
+    cart.map((product) => {
+      products.push(product.productId);
+    });
+    console.log(products);
+    const order = {
+      method: "POST",
+      headers : {
+        "Content-Type": "application/json"
+      },
+      body :JSON.stringify({
+            contact ,
+            products,
+        }),
+      mode : "cors",
+      credentials: "same-origin"
+    };
+    fetch("http://localhost:3000/api/products/order", order)
+    .then((result) => result.json())
+    .then((dataOrder) =>
+    {
+      console.log(dataOrder.orderId);
+      window.location.href = "./confirmation.html?" + dataOrder.orderId ;
+      localStorage.clear() 
+    } 
+    );
     alert("Commande validée !");
   } else {
     alert("veuillez remplir correctement les champs");
   }
 });
+
 
 
