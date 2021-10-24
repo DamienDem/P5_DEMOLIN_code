@@ -3,7 +3,8 @@ const cartItems = document.getElementById('cart__items');
 let cart = JSON.parse(localStorage.cart);
 const totalQuantity = document.getElementById('totalQuantity');
 const totalPrice = document.getElementById('totalPrice');
-const total = async () => {
+
+const total = async  () => {
   await displayProductInCart();
   let totalItems = 0;
   let priceItems = 0;
@@ -35,7 +36,7 @@ function displayProductInCart() {
                       <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${product.quantityTotal}">
                     </div>
                     <div class="cart__item__content__settings__delete">
-                      <p class="deleteItem">Supprimer</p>
+                      <p class="deleteItem" data-settings="${product.name}${product.colorProduct}">Supprimer</p>
                     </div>
                   </div>
                 </div>
@@ -44,8 +45,7 @@ function displayProductInCart() {
   ).join(""); 
 };
 
-const quantityChange = async () => {
-  await displayProductInCart();
+const quantityChange =  () => {
   let itemQuantity = document.getElementsByClassName('itemQuantity');
   document.body.addEventListener('change' , () => {
     for(let i=0; i<itemQuantity.length ; i++)
@@ -61,37 +61,44 @@ const quantityChange = async () => {
   });
 } 
 quantityChange();
-const deleteItem = document.getElementsByClassName('deleteItem');
-const deleteProduct = async () => {
-  await displayProductInCart();
-  //console.log(cart);
-  for(let i = 0 ; i < cart.length ; i++)
-  {
-    const cartItem = document.getElementsByClassName('cart__item');
-    deleteItem[i].addEventListener ('click', () => {
-      if( i == 0)
-      {
-        cart.splice(i ,1 );
-        cartItem[i].remove();
-        console.log('i=0');
-        console.log(cart);
 
-      } else 
+/*const deleteProduct =  () => {
+  const deleteItem = document.getElementsByClassName('deleteItem');
+    for(let i = cart.length -1 ; i >= 0 ; i--)
+    {
+      deleteItem[i].addEventListener ('click', (e) =>
+     { 
+       e.target.closest('article').remove();
+       delete cart[i];
+      });
+    }
+  };
+  deleteProduct();*/
+  /*const deleteProduct =  () => {
+    const deleteItem = document.getElementsByClassName('deleteItem');
+      for(let i = cart.length -1 ; i >= 0 ; i--)
       {
-        cart.splice(i ,1 );
-        cartItem[i].remove();
-        i--;
-        console.log('i !=0');
-        console.log(cart);
-        console.log(i);
+        deleteItem[i].addEventListener ('click', (e) =>
+       { 
+         e.target.closest('article').remove();
+         cart.splice(i,1);
+        });
       }
-     localStorage.setItem('cart' , JSON.stringify(cart));
-     total();
-    }); 
-  }
-};
-deleteProduct();
-
+    };
+    deleteProduct();*/
+    const deleteProduct =  () => {
+      const deleteItem = document.getElementsByClassName('deleteItem');
+        for(let i = cart.length -1 ; i >= 0 ; i--)
+        {
+          deleteItem[i].addEventListener ('click', (e) =>
+         { 
+           e.target.closest('article').remove();
+           cart = cart.filter(item => item != cart[i]);
+           return cart;
+          });
+        }
+      };
+      deleteProduct();
  //-----------------------
  // FORMULAIRE
  //---------------------

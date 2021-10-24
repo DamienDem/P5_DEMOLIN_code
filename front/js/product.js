@@ -19,7 +19,8 @@ const getProduct = async () => {
     .then((res) => res.json())
     .then((data) => product = data  ); 
     console.log(product)
-    cart = JSON.parse(localStorage.getItem('cart'));
+    cart = JSON.parse(localStorage.getItem('cart'))
+    .catch( alert('error'));
 };
 //getProduct();
 
@@ -53,7 +54,6 @@ const addToCart = async () => {
         };
            
 const addInCart = () => {
-
     if(cart)
     {
          productInCart = false;
@@ -64,7 +64,6 @@ const addInCart = () => {
                 cart[i].quantityTotal += productAdd.quantityTotal;
                 productInCart = true;
                 break;
-                console.log('même couleur: changement de la quantite');
             }
         }
         if(!productInCart)
@@ -83,9 +82,8 @@ const addInCart = () => {
    localStorage.setItem('cart',JSON.stringify(cart));   
 }
 addInCart();
-
     });
 }
 addToCart();
+//localStorage.clear();
 
-//localStorage.removeItem('cart')

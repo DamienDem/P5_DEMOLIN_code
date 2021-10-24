@@ -4,8 +4,9 @@ let products = [];
 const getProducts = async () => {
     await fetch("http://localhost:3000/api/products")
     .then((res) => res.json())
-    .then((data) => products = data );
-    console.log(products);
+    .then((data) => products = data)
+    .catch( alert('error'));
+    
 };
 const productsDisplay = async () => {
     await getProducts ();
