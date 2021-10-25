@@ -20,7 +20,7 @@ const getProduct = async () => {
     .then((data) => product = data  ); 
     console.log(product)
     cart = JSON.parse(localStorage.getItem('cart'))
-    .catch( alert('error'));
+    //.catch( alert('error'));
 };
 //getProduct();
 
