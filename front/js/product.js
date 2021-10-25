@@ -82,6 +82,7 @@ const addInCart = () => {
    localStorage.setItem('cart',JSON.stringify(cart));   
 }
 addInCart();
+alert('Le produit a été ajouté au panier')
     });
 }
 addToCart();

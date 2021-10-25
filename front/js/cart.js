@@ -1,9 +1,10 @@
 
 const cartItems = document.getElementById('cart__items');
-let cart = JSON.parse(localStorage.cart);
+let cart = JSON.parse(localStorage.cart); // récupére le panier stocker dans le localStorage
 const totalQuantity = document.getElementById('totalQuantity');
 const totalPrice = document.getElementById('totalPrice');
 
+// total cacul et affiche la quantité de produits dans le panier et le prix total
 const total = async  () => {
   await displayProductInCart();
   let totalItems = 0;
@@ -17,6 +18,8 @@ const total = async  () => {
   totalPrice.textContent = priceItems;
 }
 total();
+
+// Affiche les produits du panier cart sur la page
 function displayProductInCart() {
  // console.log(cart);
   cartItems.innerHTML = cart.map((product) => `
@@ -45,6 +48,7 @@ function displayProductInCart() {
   ).join(""); 
 };
 
+// écoute l'événement sur l'input 'itemQuantity' et modifie la quantité dans le panier et sur le DOM
 const quantityChange =  () => {
   let itemQuantity = document.getElementsByClassName('itemQuantity');
   document.body.addEventListener('change' , () => {
@@ -62,6 +66,12 @@ const quantityChange =  () => {
 } 
 quantityChange();
 
+
+//-------------------------------------------------
+//-- Supprime un élément du panier cart et suprimme l'élément du DOM
+//---------------------------------------
+
+//Avec delete cart[i] le bon produit est supprimer l'item supprimer est remplacer par un item empty
 /*const deleteProduct =  () => {
   const deleteItem = document.getElementsByClassName('deleteItem');
     for(let i = cart.length -1 ; i >= 0 ; i--)
@@ -73,7 +83,8 @@ quantityChange();
       });
     }
   };
-  deleteProduct();*/
+ */
+// Avec cart.splice(i,1) et cart = cart.filter(item => item != cart[i]) le prduit est complétement supprimer et le tableau est réindexer ce qui pause des problémée si ont doit supprimer plusieurs articles
   /*const deleteProduct =  () => {
     const deleteItem = document.getElementsByClassName('deleteItem');
       for(let i = cart.length -1 ; i >= 0 ; i--)
@@ -85,7 +96,7 @@ quantityChange();
         });
       }
     };
-    deleteProduct();*/
+ */
     const deleteProduct =  () => {
       const deleteItem = document.getElementsByClassName('deleteItem');
         for(let i = cart.length -1 ; i >= 0 ; i--)
