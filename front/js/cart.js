@@ -84,7 +84,7 @@ quantityChange();
     }
   };
  */
-// Avec cart.splice(i,1) et cart = cart.filter(item => item != cart[i]) le prduit est complétement supprimer et le tableau est réindexer ce qui pause des problémée si ont doit supprimer plusieurs
+// Avec cart.splice(i,1) et cart = cart.filter(item => item != cart[i]) le prduit est complétement supprimer et le tableau est réindexer ce qui pause des problémée si ont doit supprimer
   /*const deleteProduct =  () => {
     const deleteItem = document.getElementsByClassName('deleteItem');
       for(let i = cart.length -1 ; i >= 0 ; i--)
@@ -99,15 +99,15 @@ quantityChange();
  */
     const deleteProduct =  () => {
       const deleteItem = document.getElementsByClassName('deleteItem');
-        
-          deleteItem.addEventListener ('click', (e) =>
-         { for(let i = cart.length -1 ; i >= 0 ; i--)
-          {
+        for(let i = cart.length -1 ; i >= 0 ; i--)
+        {
+          deleteItem[i].addEventListener ('click', (e) =>
+         { 
            e.target.closest('article').remove();
            cart = cart.filter(item => item != cart[i]);
            return cart;
-          }
           });
+        }
       };
       deleteProduct();
  //-----------------------
