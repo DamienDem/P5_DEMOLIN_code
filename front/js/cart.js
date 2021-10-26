@@ -4,25 +4,23 @@ let cart = JSON.parse(localStorage.cart); // récupére le panier stocker dans l
 const totalQuantity = document.getElementById('totalQuantity');
 const totalPrice = document.getElementById('totalPrice');
 
-// total cacul et affiche la quantité de produits dans le panier et le prix total
-const total = async  () => {
-  await displayProductInCart();
-  await deleteItem();
-  let totalItems = 0;
-  let priceItems = 0;
-  for(let i = 0; i<cart.length; i++)
+const bubbleSort = () => {
+  for(let i = 0; i < cart.length -1 ; i++)
   {
-    totalItems += cart[i].quantityTotal
-    priceItems = priceItems + cart[i].quantityTotal * cart[i].price;
+      for(let j = 0; j < cart.length -1 -i; j++)
+      {
+          if(cart[j].productId < cart[j+1].productId)
+          {
+              [cart[j], cart[j+1]] = [cart[j+1], cart[j]]
+              console.log(cart);
+          }
+      }
   }
-  totalQuantity.textContent = totalItems;
-  totalPrice.textContent = priceItems;
+  return cart;
 }
-total();
-
 // Affiche les produits du panier cart sur la page
-function displayProductInCart() {
- // console.log(cart);
+const displayProductInCart = async () => {
+ await bubbleSort();
   cartItems.innerHTML = cart.map((product) => `
     <article class="cart__item"  id="${product.productId}">
                 <div class="cart__item__img">
@@ -90,6 +88,22 @@ quantityChange();
       });
     };
     deleteItem();
+
+// total cacul et affiche la quantité de produits dans le panier et le prix total
+const total = async  () => {
+  await displayProductInCart();
+  await deleteItem();
+  let totalItems = 0;
+  let priceItems = 0;
+  for(let i = 0; i<cart.length; i++)
+  {
+    totalItems += cart[i].quantityTotal
+    priceItems = priceItems + cart[i].quantityTotal * cart[i].price;
+  }
+  totalQuantity.textContent = totalItems;
+  totalPrice.textContent = priceItems;
+}
+total();
  //-----------------------
  // FORMULAIRE
  //---------------------
@@ -107,23 +121,11 @@ const errorDisplay = (tag, message) => {
   errorMessage.textContent = message;
 };
 
-const firstNameChecker = (value) => {
-  if (value.length > 0 && (value.length < 3 || value.length > 20)) {
-    errorDisplay("firstName", "Le Prénom doit faire entre 3 et 20 caractères");
-    firstName = null;
-  } else if (!value.match(/^[a-zA-Z. -]*$/)) {
-    errorDisplay("firstName","Le Prénom ne doit pas contenir de caractères spéciaux");
-    firstName = null;
-  } else { 
-    errorDisplay("firstName", "");
-    firstName = value;
-  }
-};
 const nameChecker = (value ,tag, name) => {
   if (value.length > 0 && (value.length < 3 || value.length > 20)) {
     errorDisplay(tag, "Le"+ name +"doit faire entre 3 et 20 caractères");
     lastName = null;name
-  } else if (!value.match(/^[a-zA-Z. -]*$/)) {
+  } else if (!value.match(/^[a-zA-Z. '-]*$/)) {
     errorDisplay(tag,"Le"+ name +"doit pas contenir de caractères spéciaux");
     lastName = null;
   } else { 
@@ -135,7 +137,7 @@ const addressChecker = (value) => {
   if (value.length > 0 && (value.length < 10 || value.length > 40)) {
     errorDisplay("address", "L'adresse doit faire entre 10 et 40 caractères");
     address = null;
-  } else if (!value.match(/^[a-zA-Z0-9 _.-]*$/)) {
+  } else if (!value.match(/^[a-zA-Z0-9 '_.-]*$/)) {
     errorDisplay("address","L'adresse ne doit pas contenir de caractères spéciaux");
     address = null;
   } else {
@@ -147,7 +149,7 @@ const cityChecker = (value) => {
   if (value.length > 0 && (value.length < 3 || value.length > 20)) {
     errorDisplay("city", "Le nom de la ville doit faire entre 3 et 20 caractères");
     city = null;
-  } else if (!value.match(/^[0-9]{5,}[a-zA-Z _.-]*$/)) {
+  } else if (!value.match(/^[0-9]{5,}[a-zA-Z '_.-]*$/)) {
     errorDisplay("city","Indiquer le nom de la ville avec le code postal et sans caractéres spéciaux");
     city = null;
   } else {
