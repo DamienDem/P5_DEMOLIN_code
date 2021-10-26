@@ -119,15 +119,15 @@ const firstNameChecker = (value) => {
     firstName = value;
   }
 };
-const lastNameChecker = (value) => {
+const nameChecker = (value ,tag, name) => {
   if (value.length > 0 && (value.length < 3 || value.length > 20)) {
-    errorDisplay("lastName", "Le Nom doit faire entre 3 et 20 caractères");
-    lastName = null;
+    errorDisplay(tag, "Le"+ name +"doit faire entre 3 et 20 caractères");
+    lastName = null;name
   } else if (!value.match(/^[a-zA-Z. -]*$/)) {
-    errorDisplay("lastName","Le Nom ne doit pas contenir de caractères spéciaux");
+    errorDisplay(tag,"Le"+ name +"doit pas contenir de caractères spéciaux");
     lastName = null;
   } else { 
-    errorDisplay("lastName", "");
+    errorDisplay(tag, "");
     lastName = value;
   }
 };
@@ -169,10 +169,10 @@ inputs.forEach((input) => {
   input.addEventListener("input", (e) => {
     switch (e.target.id) {
       case "firstName":
-        firstNameChecker(e.target.value);
+        nameChecker(e.target.value,"firstName",'prénom');
         break;
         case "lastName":
-        lastNameChecker(e.target.value);
+        nameChecker(e.target.value,'lastName','nom');
         break;
         case "address":
         addressChecker(e.target.value);
