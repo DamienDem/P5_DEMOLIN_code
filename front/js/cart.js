@@ -1,9 +1,11 @@
 
-const cartItems = document.getElementById('cart__items');
+const cartItems = document.getElementById('cart__items'); // pointe l'élément dans lequel on va afficher nos produits
 let cart = JSON.parse(localStorage.cart); // récupére le panier stocker dans le localStorage
+// variable qui pointe leséléments quantité et prix total
 const totalQuantity = document.getElementById('totalQuantity');
 const totalPrice = document.getElementById('totalPrice');
 
+//Fonction qui permet de trier les éléménts du panier par ID
 const bubbleSort = () => {
   for(let i = 0; i < cart.length -1 ; i++)
   {
@@ -18,7 +20,7 @@ const bubbleSort = () => {
   }
   return cart;
 }
-// Affiche les produits du panier cart sur la page
+// Affiche les produits du panier cart sur la page une fois le panier trier
 const displayProductInCart = async () => {
  await bubbleSort();
   cartItems.innerHTML = cart.map((product) => `
@@ -47,7 +49,7 @@ const displayProductInCart = async () => {
   ).join(""); 
 };
 
-// écoute l'événement sur l'input 'itemQuantity' et modifie la quantité dans le panier et sur le DOM
+// écoute l'événement sur l'input 'itemQuantity' et modifie la quantité dans le panier(cart) et sur le DOM
 const quantityChange =  () => {
   let itemQuantity = document.getElementsByClassName('itemQuantity');
   document.body.addEventListener('change' , () => {
@@ -58,36 +60,32 @@ const quantityChange =  () => {
       let qte = itemQuantity[i].previousElementSibling;
       qte.textContent = "Qté: " +quantitySelect;    
       localStorage.setItem('cart' , JSON.stringify(cart));
-     // console.log(cart);
     }
     total();
   });
 } 
 quantityChange();
 
-
-//-------------------------------------------------
-//-- Supprime un élément du panier cart et suprimme l'élément du DOM
-//---------------------------------------
-    const deleteItem = () =>  {
-      document.querySelectorAll('.deleteItem').forEach((btn) => {
-        btn.addEventListener("click", (e) => {
-          let newArr = [];
-          cart.map((item) => {
-            if (item.productId != e.target.dataset.id || item.colorProduct != e.target.dataset.color)
-            {
-              newArr.push(item);
-            }
-          });
-          cart = newArr;
-          console.log(cart);
-          e.target.closest('article').remove();
-          localStorage.setItem('cart' , JSON.stringify(cart));
-          total();
-        });
+// Au clic sur le bouton supprimer, supprime un élément du panier cart et suprimme l'élément du DOM
+const deleteItem = () =>  {
+  document.querySelectorAll('.deleteItem').forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      let newArr = [];
+      cart.map((item) => {
+        if (item.productId != e.target.dataset.id || item.colorProduct != e.target.dataset.color)
+        {
+          newArr.push(item);
+        }
       });
-    };
-    deleteItem();
+      cart = newArr;
+      console.log(cart);
+      e.target.closest('article').remove();
+      localStorage.setItem('cart' , JSON.stringify(cart));
+      total();
+    });
+  });
+};
+deleteItem();
 
 // total cacul et affiche la quantité de produits dans le panier et le prix total
 const total = async  () => {
@@ -104,23 +102,27 @@ const total = async  () => {
   totalPrice.textContent = priceItems;
 }
 total();
+
  //-----------------------
  // FORMULAIRE
  //---------------------
 
+ // On pointe tout les inputs du formulaire
 const form = document.querySelector("form");
 const inputs = document.querySelectorAll(
   'input[type="text"] , input[type="email"]'
 );
-console.log(inputs);
-console.log(form);
+
+// On initialise les variables contenant les éléments saisie par l'utilisateur
 let lastName,firstName,address,city, email;
 
+// Création d'une fonction pour afficher un meassge d'erreur
 const errorDisplay = (tag, message) => {
   const errorMessage = document.getElementById(tag +"ErrorMsg");
   errorMessage.textContent = message;
 };
 
+// Fonction qui vérifie que la valeur rentrer par l'utilisateur ne contient pas trop de caractére, pas de caractére spéciaux et pas de chiffre
 const nameChecker = (value ,tag, name) => {
   if (value.length > 0 && (value.length < 3 || value.length > 20)) {
     errorDisplay(tag, "Le"+ name +"doit faire entre 3 et 20 caractères");
@@ -133,6 +135,7 @@ const nameChecker = (value ,tag, name) => {
     lastName = value;
   }
 };
+// Fonction qui vérifie que la valeur rentrer par l'utilisateur ne contient pas trop de caractére et pas de caractére spéciaux
 const addressChecker = (value) => {
   if (value.length > 0 && (value.length < 10 || value.length > 40)) {
     errorDisplay("address", "L'adresse doit faire entre 10 et 40 caractères");
@@ -145,6 +148,7 @@ const addressChecker = (value) => {
     address = value;
   }
 };
+// Fonction qui vérifie que la valeur rentrer par l'utilisateur ne contient pas trop de caractére, pas de caractére spéciaux et commence par 5 chiffres
 const cityChecker = (value) => {
   if (value.length > 0 && (value.length < 3 || value.length > 20)) {
     errorDisplay("city", "Le nom de la ville doit faire entre 3 et 20 caractères");
@@ -157,6 +161,7 @@ const cityChecker = (value) => {
     city = value;
   }
 };
+// Fonction qui vérifie que la valeur rentrer par l'utilisateur contient obligatoirement un @ au milieu
 const emailChecker = (value) => {
   if (!value.match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i)) {
     errorDisplay("email", "Le mail n'est pas valide");
@@ -167,6 +172,7 @@ const emailChecker = (value) => {
   }
 };
 
+// Fonction qui controle si les données rentrées par l'utilisateur sont compatibles
 inputs.forEach((input) => {
   input.addEventListener("input", (e) => {
     switch (e.target.id) {
@@ -190,9 +196,10 @@ inputs.forEach((input) => {
     }
   });
 });
+
+// Fonction qui au clic envoie la commande à l'API et r'envoie vers la page confirmation
 const passOrder = () => {
   form.addEventListener("submit", (e) => {
-    e.preventDefault();
     if (lastName && firstName && address && city && email ) {
         contact = {
         lastName,

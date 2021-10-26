@@ -1,6 +1,11 @@
+//On récupére l'id dans l'URL
 let params = new URL(document.location).searchParams;
 let id = params.get("id");
+
+// initialisation du produit affiché sur la page
 let product = [];
+
+// On pointe les sélecteurs pour pouvoir afficher les produits
 const productImage = document.querySelector('.item__img');
 const produtcTitle = document.getElementById('title');
 const produtcPrice = document.getElementById('price');
@@ -8,19 +13,16 @@ const productDescription = document.getElementById('description');
 const colorSelect = document.getElementById('colors');
 const addToBasket = document.getElementById('addToCart');
 const quantitySelect = document.getElementById("quantity");
-let cart = [];
-//let productInCart = false;
-let color;
-let quantityAdd;
+
+// Récupére les articles deja présent dans le panier
+let cart = JSON.parse(localStorage.getItem('cart')) 
 
 // Récupération du produit avec l'ID
 const getProduct = async () => {
     await fetch("http://localhost:3000/api/products/" + id)
     .then((res) => res.json())
-    .then((data) => product = data  ); 
-    console.log(product)
-    cart = JSON.parse(localStorage.getItem('cart'))
-    //.catch( alert('error'));
+    .then((data) => product = data) 
+    .catch(() => alert('error'));
 };
 
 // Affichage du produit
@@ -37,10 +39,11 @@ const productDisplay = async () => {
     .join("");
 };
 
-// Si le local storage contient une valeur la récupérer et l'jouter dans l'array cart
+// On écoute l'événement clic sur le bouton ajouter au panier
 const addToCart = async () => {
     await productDisplay();
     addToBasket.addEventListener('click', () => {
+// On déclare une variable contenant un objet produit ajouté avec toute les caratéristiques
         let productAdd = {
             name: `${product.name}`,
             productId : id,
@@ -50,6 +53,7 @@ const addToCart = async () => {
             quantityTotal : parseInt(quantitySelect.value,10), 
             price: `${product.price}`
         };
+// Création d'un condition pour modifier la quantité si le produit est déja présent dans le panier       
     if(cart)
     {
         productInCart = false;
@@ -65,15 +69,13 @@ const addToCart = async () => {
             if(!productInCart)
         {
             cart.push(productAdd);
-            console.log('ajoute un produit au panier');
         }   
     }
     else
     {
         cart = [productAdd];
-        console.log('le panier est vide, ajoute un premier produit');
     }
-    localStorage.setItem('cart',JSON.stringify(cart));   
+    localStorage.setItem('cart',JSON.stringify(cart));  // Ajoute le produit au local storage 
     alert('Le produit a été ajouté au panier')
     });
 }
