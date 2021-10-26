@@ -7,6 +7,7 @@ const totalPrice = document.getElementById('totalPrice');
 // total cacul et affiche la quantité de produits dans le panier et le prix total
 const total = async  () => {
   await displayProductInCart();
+  await deleteItem();
   let totalItems = 0;
   let priceItems = 0;
   for(let i = 0; i<cart.length; i++)
@@ -39,7 +40,7 @@ function displayProductInCart() {
                       <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${product.quantityTotal}">
                     </div>
                     <div class="cart__item__content__settings__delete">
-                      <p class="deleteItem" data-settings="${product.name}${product.colorProduct}">Supprimer</p>
+                      <p class="deleteItem" data-id="${product.productId}" data-color="${product.colorProduct}">Supprimer</p>
                     </div>
                   </div>
                 </div>
@@ -70,46 +71,25 @@ quantityChange();
 //-------------------------------------------------
 //-- Supprime un élément du panier cart et suprimme l'élément du DOM
 //---------------------------------------
-
-//Avec delete cart[i] le bon produit est supprimer l'item supprimer est remplacer par un item empty
-/*const deleteProduct =  () => {
-  const deleteItem = document.getElementsByClassName('deleteItem');
-    for(let i = cart.length -1 ; i >= 0 ; i--)
-    {
-      deleteItem[i].addEventListener ('click', (e) =>
-     { 
-       e.target.closest('article').remove();
-       delete cart[i];
-      });
-    }
-  };
- */
-// Avec cart.splice(i,1) et cart = cart.filter(item => item != cart[i]) le prduit est complétement supprimer et le tableau est réindexer ce qui pause des problémée si ont doit supprimer
-  /*const deleteProduct =  () => {
-    const deleteItem = document.getElementsByClassName('deleteItem');
-      for(let i = cart.length -1 ; i >= 0 ; i--)
-      {
-        deleteItem[i].addEventListener ('click', (e) =>
-       { 
-         e.target.closest('article').remove();
-         cart.splice(i,1);
-        });
-      }
-    };
- */
-    const deleteProduct =  () => {
-      const deleteItem = document.getElementsByClassName('deleteItem');
-        for(let i = cart.length -1 ; i >= 0 ; i--)
-        {
-          deleteItem[i].addEventListener ('click', (e) =>
-         { 
-           e.target.closest('article').remove();
-           cart = cart.filter(item => item != cart[i]);
-           return cart;
+    const deleteItem = () =>  {
+      document.querySelectorAll('.deleteItem').forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          let newArr = [];
+          cart.map((item) => {
+            if (item.productId != e.target.dataset.id || item.colorProduct != e.target.dataset.color)
+            {
+              newArr.push(item);
+            }
           });
-        }
-      };
-      deleteProduct();
+          cart = newArr;
+          console.log(cart);
+          e.target.closest('article').remove();
+          localStorage.setItem('cart' , JSON.stringify(cart));
+          total();
+        });
+      });
+    };
+    deleteItem();
  //-----------------------
  // FORMULAIRE
  //---------------------
