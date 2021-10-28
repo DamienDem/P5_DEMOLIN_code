@@ -154,7 +154,7 @@ const cityChecker = (value) => {
     errorDisplay("city", "Le nom de la ville doit faire entre 3 et 20 caractères");
     city = null;
   } else if (!value.match(/^[0-9]{5,}[a-zA-Z '_.-]*$/)) {
-    errorDisplay("city","Indiquer le nom de la ville avec le code postal et sans caractéres spéciaux");
+    errorDisplay("city","Indiquer le nom de la ville en commençant par le code postal et sans caractéres spéciaux");
     city = null;
   } else {
     errorDisplay("city", "")
