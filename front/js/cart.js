@@ -210,7 +210,7 @@ inputs.forEach((input) => {
         emailChecker(e.target.value);
         break;
       default:
-        null;
+        nul;
     }
   });
 });
