@@ -78,7 +78,6 @@ const deleteItem = () =>  {
         }
       });
       cart = newArr;
-      console.log(cart);
       e.target.closest('article').remove();
       localStorage.setItem('cart' , JSON.stringify(cart));
       total();
@@ -125,14 +124,33 @@ const errorDisplay = (tag, message) => {
 // Fonction qui vérifie que la valeur rentrer par l'utilisateur ne contient pas trop de caractére, pas de caractére spéciaux et pas de chiffre
 const nameChecker = (value ,tag, name) => {
   if (value.length > 0 && (value.length < 3 || value.length > 20)) {
-    errorDisplay(tag, "Le"+ name +"doit faire entre 3 et 20 caractères");
-    lastName = null;name
+    errorDisplay(tag, "Le "+ name +" doit faire entre 3 et 20 caractères");
+    if(tag == 'firstName')
+    {
+      firstName = null;
+    }else
+    {
+      lastName = null;
+    }
   } else if (!value.match(/^[a-zA-Z. '-]*$/)) {
-    errorDisplay(tag,"Le"+ name +"doit pas contenir de caractères spéciaux");
-    lastName = null;
+    errorDisplay(tag,"Le "+ name +" doit pas contenir de caractères spéciaux");
+    if(tag == 'firstName')
+    {
+      firstName = null;
+    }else
+    {
+      lastName = null;
+    }
   } else { 
     errorDisplay(tag, "");
-    lastName = value;
+    if(tag == 'firstName')
+    {
+      firstName = value;
+    }else
+    {
+      lastName = value;
+    }
+    
   }
 };
 // Fonction qui vérifie que la valeur rentrer par l'utilisateur ne contient pas trop de caractére et pas de caractére spéciaux
@@ -167,7 +185,7 @@ const emailChecker = (value) => {
     errorDisplay("email", "Le mail n'est pas valide");
     email = null;
   } else {
-    errorDisplay("email", "", true);
+    errorDisplay("email", "");
     email = value;
   }
 };
@@ -192,7 +210,7 @@ inputs.forEach((input) => {
         emailChecker(e.target.value);
         break;
       default:
-        nul;
+        null;
     }
   });
 });
@@ -200,13 +218,14 @@ inputs.forEach((input) => {
 // Fonction qui au clic envoie la commande à l'API et r'envoie vers la page confirmation
 const passOrder = () => {
   form.addEventListener("submit", (e) => {
+    console.log();
     if (lastName && firstName && address && city && email ) {
         contact = {
         lastName,
-              firstName,
-              address,
-              city,
-              email,
+        firstName,
+        address,
+        city,
+        email,
       };
       let products = [];
       cart.map((product) => {
@@ -229,7 +248,7 @@ const passOrder = () => {
       .then((dataOrder) =>
       {
         console.log(dataOrder.orderId);
-        window.location.href = "./confirmation.html? Id="+ dataOrder.orderId ;
+        window.location.href = "./confirmation.html?id="+dataOrder.orderId ;
         localStorage.clear() 
       } 
       );
